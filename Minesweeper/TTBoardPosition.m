@@ -9,12 +9,11 @@
 #import "TTBoardPosition.h"
 
 @implementation TTBoardPosition
--(id)initWithRow:(NSInteger)row andColumn:(NSInteger)column
+-(id)initWithPositionState:(PositionState)positionState
 {
     self = [super init];
     if (self){
-        self.row = row;
-        self.column = column;
+        self.positionState = positionState;
     }
     return self;
 }

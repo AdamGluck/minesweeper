@@ -17,10 +17,9 @@
 -(void)resetBoard;
 
 /**
-@abstract Sees if there is a bomb at an indexPath
-@param indexPath The location of the bomb on the board.
+@abstract Sees if there is a bomb at a row and column.
 */
--(BOOL)checkBombAtBoardPosition:(TTBoardPosition *)boardPosition;
+-(BOOL)checkBombAtRow:(NSInteger)row andColumn:(NSInteger)column;
 
 /**
 @abstract Tests to see if the board is a winning board.
@@ -28,8 +27,15 @@
 -(BOOL)validateBoard;
 
 /**
-@abstract Returns an array of all the indexPath's where there are bombs.
+@abstract Returns the locations of bombs as indexPaths.
 */
--(NSArray *)bombIndexPaths;
+-(NSMutableArray *)bombIndexPaths;
+
+/**
+@abstract Finds the number of bombs around a selectd position.
+*/
+-(NSInteger)numberOfBombsAroundPositionWithRow:(NSInteger)row andColumn:(NSInteger)column;
+
+
 
 @end

@@ -8,10 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum {
+    PositionStateNoBomb,
+    PositionStateBomb,
+    PositionStateSelected,
+} PositionState;
+
 @interface TTBoardPosition : NSObject
 
--(id)initWithRow:(NSInteger)row andColumn:(NSInteger)column;
-@property (assign, nonatomic) NSInteger row;
-@property (assign, nonatomic) NSInteger column;
+-(id)initWithPositionState:(PositionState) positionState;
+@property (assign, nonatomic) PositionState positionState;
 
 @end
