@@ -21,6 +21,8 @@
 		0F68DDEB18A5365900348C7E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F68DDCD18A5365800348C7E /* UIKit.framework */; };
 		0F68DDF318A5365900348C7E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0F68DDF118A5365900348C7E /* InfoPlist.strings */; };
 		0F68DDF518A5365900348C7E /* MinesweeperTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F68DDF418A5365900348C7E /* MinesweeperTests.m */; };
+		0F68DE0018A5368800348C7E /* TTBoardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F68DDFF18A5368800348C7E /* TTBoardModel.m */; };
+		0F68DE0318A53DC000348C7E /* TTBoardPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F68DE0218A53DC000348C7E /* TTBoardPosition.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +55,10 @@
 		0F68DDF018A5365900348C7E /* MinesweeperTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MinesweeperTests-Info.plist"; sourceTree = "<group>"; };
 		0F68DDF218A5365900348C7E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		0F68DDF418A5365900348C7E /* MinesweeperTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MinesweeperTests.m; sourceTree = "<group>"; };
+		0F68DDFE18A5368800348C7E /* TTBoardModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTBoardModel.h; sourceTree = "<group>"; };
+		0F68DDFF18A5368800348C7E /* TTBoardModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTBoardModel.m; sourceTree = "<group>"; };
+		0F68DE0118A53DC000348C7E /* TTBoardPosition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTBoardPosition.h; sourceTree = "<group>"; };
+		0F68DE0218A53DC000348C7E /* TTBoardPosition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTBoardPosition.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +120,10 @@
 			children = (
 				0F68DDD818A5365800348C7E /* TTAppDelegate.h */,
 				0F68DDD918A5365800348C7E /* TTAppDelegate.m */,
+				0F68DDFE18A5368800348C7E /* TTBoardModel.h */,
+				0F68DDFF18A5368800348C7E /* TTBoardModel.m */,
+				0F68DE0118A53DC000348C7E /* TTBoardPosition.h */,
+				0F68DE0218A53DC000348C7E /* TTBoardPosition.m */,
 				0F68DDDB18A5365800348C7E /* Main.storyboard */,
 				0F68DDDE18A5365900348C7E /* TTViewController.h */,
 				0F68DDDF18A5365900348C7E /* TTViewController.m */,
@@ -252,7 +262,9 @@
 			files = (
 				0F68DDDA18A5365800348C7E /* TTAppDelegate.m in Sources */,
 				0F68DDD618A5365800348C7E /* main.m in Sources */,
+				0F68DE0018A5368800348C7E /* TTBoardModel.m in Sources */,
 				0F68DDE018A5365900348C7E /* TTViewController.m in Sources */,
+				0F68DE0318A53DC000348C7E /* TTBoardPosition.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
