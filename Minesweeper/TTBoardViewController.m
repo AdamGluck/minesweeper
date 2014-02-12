@@ -59,6 +59,11 @@ typedef enum {
 
 -(void)textFieldDidEndEditing:(UITextField *)textField {
     [self.view removeGestureRecognizer:self.tapGesture];
+    
+    if (!self.boardSizeField.text.integerValue) self.boardSizeField.text = @"8";
+    if (!self.bombCountField.text.integerValue) self.bombCountField.text = @"10";
+    
+    // keep board from being too large
     if ([textField isEqual:self.boardSizeField] && self.boardSizeField.text.integerValue > 17) {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Exceed max board size" message:@"The maximum board size is 17." delegate:self cancelButtonTitle:@"Okay." otherButtonTitles: nil];
         [alert show];
@@ -130,29 +135,29 @@ typedef enum {
     [self revealBombCount:bombCount forCellAtIndexPath:indexPath];
     
     if (!bombCount){
-        NSMutableArray * surroundingTiles = [self.board indexPathsAroundPositionAtIndexPath:indexPath];
-        [self handleZeroWithSurroundingTiles:surroundingTiles];
+        NSMutableArray * surroundingPositions = [self.board indexPathsAroundPositionAtIndexPath:indexPath];
+        [self handleZeroWithSurroundingPositions: surroundingPositions];
     }
 }
 
--(void)handleZeroWithSurroundingTiles:(NSMutableArray *)surroundingTiles {
-    // essentially a BFS implementation...
-    // this keeps track of the tiles we have visited
-    NSMutableArray * visitedTiles = [NSMutableArray array];
+-(void)handleZeroWithSurroundingPositions:(NSMutableArray *)surroundingPositions {
+    // Essentially a BFS implementation
+    // This keeps track of the positions we have visited while doing the BFS
+    NSMutableArray * visitedPositions = [NSMutableArray array];
     
-    while (surroundingTiles.count) {
-        NSIndexPath * surroundingTileIndexPath = (NSIndexPath *)surroundingTiles.lastObject;
-        [visitedTiles addObject:surroundingTileIndexPath];
-        [surroundingTiles removeLastObject];
+    while (surroundingPositions.count) {
+        NSIndexPath * surroundingPositionIndexPath = (NSIndexPath *)surroundingPositions.lastObject;
+        [visitedPositions addObject:surroundingPositionIndexPath];
+        [surroundingPositions removeLastObject];
         
-        NSInteger bombCount = [self.board checkNumberOfBombsAroundPositionWithIndexPath:surroundingTileIndexPath];
-        [self revealBombCount:bombCount forCellAtIndexPath:surroundingTileIndexPath];
+        NSInteger bombCount = [self.board checkNumberOfBombsAroundPositionWithIndexPath:surroundingPositionIndexPath];
+        [self revealBombCount:bombCount forCellAtIndexPath:surroundingPositionIndexPath];
         
         if (!bombCount){
-            NSMutableArray * additionalTiles = [self.board indexPathsAroundPositionAtIndexPath:surroundingTileIndexPath];
-            for (NSIndexPath * additionalTile in additionalTiles){
-                if (![visitedTiles containsObject:additionalTile]){
-                    [surroundingTiles addObject:additionalTile];
+            NSMutableArray * additionalPositions = [self.board indexPathsAroundPositionAtIndexPath:surroundingPositionIndexPath];
+            for (NSIndexPath * additionalPosition in additionalPositions){
+                if (![visitedPositions containsObject:additionalPosition]){
+                    [surroundingPositions addObject:additionalPosition];
                 }
             }
         }
@@ -211,9 +216,11 @@ typedef enum {
 {
     UICollectionViewCell * cell = [self.collectionView cellForItemAtIndexPath:indexPath];
     CGSize cellSize = [self collectionViewCellSize];
-    UIImageView * bombImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, cellSize.width, cellSize.height)];
-    bombImageView.tag = CellImageView;
     UIImage * bombImage = [UIImage imageNamed:@"Bomb"];
+    CGFloat bombImageWidthRatio = bombImage.size.width / bombImage.size.height;
+    UIImageView * bombImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, cellSize.width * bombImageWidthRatio, cellSize.height)];
+    bombImageView.center = CGPointMake(cellSize.width / 2, cellSize.height / 2);
+    bombImageView.tag = CellImageView;
     bombImageView.image = bombImage;
     [cell.contentView addSubview:bombImageView];
 }

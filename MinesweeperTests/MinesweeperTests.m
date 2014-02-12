@@ -11,7 +11,6 @@
 
 @interface MinesweeperTests : XCTestCase
 
-
 @end
 
 @implementation MinesweeperTests
@@ -27,6 +26,8 @@
     // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
 }
+
+// testing basics of Minesweeper model: victory condition, game starting, and selecting of tiles works properly
 
 -(void)testDefaultAllocation
 {
@@ -83,7 +84,7 @@
     XCTAssert([boardModel validateBoard], @"If all the not bomb positionStates are set then it should validate to a victory");
 }
 
--(void)testCheckPosition
+-(void)testCheckPositionAndCheckBomb
 {
     TTBoardModel * boardModel = [[TTBoardModel alloc] init];
     
@@ -91,19 +92,22 @@
     [boardModel didCheckBoardPositionAtIndexPath: arbitraryIndexPath];
     TTBoardPosition * boardPosition = [boardModel boardPositionAtIndexPath:arbitraryIndexPath];
     
-    XCTAssert(boardPosition.positionState == PositionStateChecked, @"Position state not checked correctly for 1x1");
+    XCTAssert(boardPosition.positionState == PositionStateChecked, @"didCheckBoardPositionAtIndexPath did not properly setting check state of boardPosition at 0x0.");
     
     arbitraryIndexPath = [NSIndexPath indexPathForItem:7 inSection:7];
     [boardModel didCheckBoardPositionAtIndexPath: arbitraryIndexPath];
     boardPosition = [boardModel boardPositionAtIndexPath:arbitraryIndexPath];
     
-    XCTAssert(boardPosition.positionState == PositionStateChecked, @"Position state not checked correctly for 7x7");
+    XCTAssert(boardPosition.positionState == PositionStateChecked, @"didCheckBoardPositionAtIndexPath did not properly setting check state of boardPosition at 0x0.");
     
     arbitraryIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     [boardModel didCheckBoardPositionAtIndexPath: arbitraryIndexPath];
     boardPosition = [boardModel boardPositionAtIndexPath:arbitraryIndexPath];
     
-    XCTAssert(boardPosition.positionState == PositionStateChecked, @"Position state not checked correctly for 0x0");
+    XCTAssert(boardPosition.positionState == PositionStateChecked, @"didCheckBoardPositionAtIndexPath did not properly setting check state of boardPosition at 0x0.");
+    boardPosition.positionState = PositionStateBomb;
+    
+    XCTAssert([boardModel checkBombAtIndexPath:arbitraryIndexPath], @"checkBombAtIndexPath: not properly checking for bomb position. Returned false when it should return true.");
 }
 
 

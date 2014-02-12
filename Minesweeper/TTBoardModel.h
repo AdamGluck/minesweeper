@@ -64,7 +64,7 @@
 -(void)didCheckBoardPositionAtIndexPath:(NSIndexPath *)indexPath;
 
 /**
-@abstract Finds the number of bombs around a selectd position.
+@abstract Finds the number of bombs around a selected position.
 @param indexPath An NSIndexPath object with an item and a section.
 */
 -(NSInteger)checkNumberOfBombsAroundPositionWithIndexPath:(NSIndexPath *)indexPath;
@@ -76,10 +76,9 @@
 -(NSMutableArray *)indexPathsAroundPositionAtIndexPath:(NSIndexPath *)indexPath;
 
 /**
-@abstract Returns the boardPosition at an indexPath.
+@abstract Returns the TTBoardPosition object at a given indexPath.
 @param indexPath An NSIndexPath object with an item and a section.
 */
-
 -(TTBoardPosition *)boardPositionAtIndexPath:(NSIndexPath *)indexPath;
 
 

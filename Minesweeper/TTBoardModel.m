@@ -116,6 +116,13 @@
     return indexPaths;
 }
 
+-(TTBoardPosition *)boardPositionAtIndexPath:(NSIndexPath *)indexPath {
+    NSInteger arrayRow = indexPath.section;
+    NSInteger arrayColumn = indexPath.row;
+    TTBoardPosition * boardPosition = self.board[arrayRow][arrayColumn];
+    return boardPosition;
+}
+
 #pragma mark - Public Method Helpers
 
 -(void)populateBoardArray {
@@ -141,17 +148,7 @@
     }
 }
 
-/*
-Helper methods to parse indexPath into the underlying data model.
-*/
-
--(TTBoardPosition *)boardPositionAtIndexPath:(NSIndexPath *)indexPath {
-    NSInteger arrayRow = indexPath.section;
-    NSInteger arrayColumn = indexPath.row;
-    TTBoardPosition * boardPosition = self.board[arrayRow][arrayColumn];
-    return boardPosition;
-}
-
+// just to make the conversion clearer
 -(NSIndexPath *)indexPathFromArrayRow:(NSInteger)row andColumn:(NSInteger)column {
     return [NSIndexPath indexPathForItem:column inSection:row];
 }

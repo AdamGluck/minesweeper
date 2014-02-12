@@ -4,7 +4,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
     </dependencies>
     <scenes>
-        <!--Board View Controller-->
+        <!--Board View Controller - Minesweeper-->
         <scene sceneID="0Qr-QA-bmM">
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="q79-oU-MZs" customClass="TTBoardViewController" sceneMemberID="viewController">
@@ -102,7 +102,7 @@
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                     </view>
-                    <navigationItem key="navigationItem" id="d6l-YV-f4E"/>
+                    <navigationItem key="navigationItem" title="Minesweeper" id="d6l-YV-f4E"/>
                     <connections>
                         <outlet property="boardSizeField" destination="hOU-JP-I00" id="7zb-9q-EeI"/>
                         <outlet property="bombCountField" destination="T2y-Mx-Tq3" id="zkd-yz-W84"/>
