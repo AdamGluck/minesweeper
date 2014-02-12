@@ -56,9 +56,14 @@
     return boardPosition.positionState == PositionStateBomb;
 }
 
+-(void)didCheckBoardPositionAtIndexPath:(NSIndexPath *)indexPath
+{
+    TTBoardPosition * boardPosition = [self boardPositionAtIndexPath:indexPath];
+    boardPosition.positionState = PositionStateChecked;
+}
+
 -(BOOL)validateBoard {
-    // test to see if there is a position state with no bomb and not selected
-    // if there is it means that they still have to select more states
+    // test to see if there is a position state of NoBomb meaning it hasn't been selected
     for (NSMutableArray * row in self.board){
         for (TTBoardPosition * column in row){
             if (column.positionState == PositionStateNoBomb){

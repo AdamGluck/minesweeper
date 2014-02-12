@@ -9,6 +9,7 @@
 #import "TTBoardViewController.h"
 #import "TTBoardModel.h"
 
+
 @interface TTBoardViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITextFieldDelegate>
 
 @property (strong, nonatomic) TTBoardModel * board;
@@ -16,10 +17,16 @@
 @property (weak, nonatomic) IBOutlet UITextField *boardSizeField;
 @property (weak, nonatomic) IBOutlet UITextField *bombCountField;
 @property (strong, nonatomic) UITapGestureRecognizer * tapGesture;
+@property (weak, nonatomic) IBOutlet UIButton *peakButton;
 
 @end
 
 @implementation TTBoardViewController
+
+// keep track of tags used throughout the viewController to mark views
+typedef enum {
+    CellImageView = 1,
+} ViewTagNumber;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -52,6 +59,14 @@
 
 -(void)textFieldDidEndEditing:(UITextField *)textField {
     [self.view removeGestureRecognizer:self.tapGesture];
+    if ([textField isEqual:self.boardSizeField] && self.boardSizeField.text.integerValue > 17) {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Exceed max board size" message:@"The maximum board size is 17." delegate:self cancelButtonTitle:@"Okay." otherButtonTitles: nil];
+        [alert show];
+        self.boardSizeField.text = @"17";
+    }
+    
+    // update the game to reflect changes in the settings
+    [self resetGame];
 }
 
 -(void)backgroundTapped:(UITapGestureRecognizer *)recognizer {
@@ -121,6 +136,7 @@
 }
 
 -(void)handleZeroWithSurroundingTiles:(NSMutableArray *)surroundingTiles {
+    // essentially a BFS implementation...
     // this keeps track of the tiles we have visited
     NSMutableArray * visitedTiles = [NSMutableArray array];
     
@@ -144,6 +160,7 @@
 }
 
 -(void)revealBombCount:(NSInteger)bombCount forCellAtIndexPath:(NSIndexPath *)indexPath {
+    // configure the view
     UICollectionViewCell * cell = [self.collectionView cellForItemAtIndexPath:indexPath];
     CGSize cellSize = [self collectionViewCellSize];
     UILabel * bombCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, cellSize.height / 1.5, cellSize.height / 1.5)];
@@ -152,6 +169,9 @@
     [bombCountLabel sizeToFit];
     bombCountLabel.center = CGPointMake(cellSize.width / 2, cellSize.height / 2);
     [cell.contentView addSubview:bombCountLabel];
+    
+    // send a message to the model that the board position has been checked
+    [self.board didCheckBoardPositionAtIndexPath:indexPath];
 }
 
 #pragma mark - UIButton Actions
@@ -171,6 +191,38 @@
     [alert show];
 }
 
+- (IBAction)peakPressed:(id)sender {
+    NSMutableArray * bombLocations = [self.board bombIndexPaths];
+    
+    for (NSIndexPath * bombLocation in bombLocations){
+        if (!self.peakButton.selected){
+            [self.peakButton setTitle:@"Hide" forState:UIControlStateSelected];
+            [self showBombAtIndexPath:bombLocation];
+        } else {
+            [self removeBombAtIndexPath:bombLocation];
+        }
+    }
+    self.peakButton.selected = !self.peakButton.selected;
+}
+
+#pragma mark - UIButton helper functions
+
+-(void)showBombAtIndexPath:(NSIndexPath *)indexPath
+{
+    UICollectionViewCell * cell = [self.collectionView cellForItemAtIndexPath:indexPath];
+    CGSize cellSize = [self collectionViewCellSize];
+    UIImageView * bombImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, cellSize.width, cellSize.height)];
+    bombImageView.tag = CellImageView;
+    UIImage * bombImage = [UIImage imageNamed:@"Bomb"];
+    bombImageView.image = bombImage;
+    [cell.contentView addSubview:bombImageView];
+}
+
+-(void)removeBombAtIndexPath:(NSIndexPath *)indexPath
+{
+    UICollectionViewCell * cell = [self.collectionView cellForItemAtIndexPath:indexPath];
+    [[cell viewWithTag:CellImageView] removeFromSuperview];
+}
 
 #pragma mark - UICollectionViewFlowLayout Delegate
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -180,6 +232,8 @@
 #pragma mark - general helper functions
 
 -(void)resetGame {
+    // reset everything to default values
+    if (self.peakButton.selected) self.peakButton.selected = NO;
     NSInteger boardSize = self.boardSizeField.text.integerValue;
     NSInteger bombCount = self.bombCountField.text.integerValue;
     self.board = [[TTBoardModel alloc] initWithBoardSize:boardSize andBombCount:bombCount];

@@ -42,6 +42,7 @@
 
 /**
  @abstract Tests to see if the board is a winning board.
+ @discussion Winning is defined as every position that is not a bomb has been revealed. The viewController is responsible for telling the model when positions have been revealed.
  */
 -(BOOL)validateBoard;
 
@@ -57,6 +58,12 @@
 -(BOOL)checkBombAtIndexPath:(NSIndexPath *)indexPath;
 
 /**
+@abstract Indicates to the model that a board position has been revealed.
+@param indexPath The NSIndexPath object with the item and section of the revealed tile.
+*/
+-(void)didCheckBoardPositionAtIndexPath:(NSIndexPath *)indexPath;
+
+/**
 @abstract Finds the number of bombs around a selectd position.
 @param indexPath An NSIndexPath object with an item and a section.
 */
@@ -68,6 +75,12 @@
 */
 -(NSMutableArray *)indexPathsAroundPositionAtIndexPath:(NSIndexPath *)indexPath;
 
+/**
+@abstract Returns the boardPosition at an indexPath.
+@param indexPath An NSIndexPath object with an item and a section.
+*/
+
+-(TTBoardPosition *)boardPositionAtIndexPath:(NSIndexPath *)indexPath;
 
 
 

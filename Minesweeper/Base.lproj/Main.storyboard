@@ -42,7 +42,7 @@
                                 </connections>
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Srt-BO-YJe">
-                                <rect key="frame" x="52" y="523" width="74" height="22"/>
+                                <rect key="frame" x="52" y="526" width="74" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Validate"/>
                                 <connections>
@@ -50,14 +50,17 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fEx-5J-TlV">
-                                <rect key="frame" x="72" y="473" width="35" height="30"/>
+                                <rect key="frame" x="72" y="424" width="35" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Peak">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="peakPressed:" destination="q79-oU-MZs" eventType="touchUpInside" id="Iyw-I5-VkV"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bdr-xJ-3Fq">
-                                <rect key="frame" x="72" y="423" width="35" height="30"/>
+                                <rect key="frame" x="72" y="474" width="35" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="New">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -104,6 +107,7 @@
                         <outlet property="boardSizeField" destination="hOU-JP-I00" id="7zb-9q-EeI"/>
                         <outlet property="bombCountField" destination="T2y-Mx-Tq3" id="zkd-yz-W84"/>
                         <outlet property="collectionView" destination="JoA-Oz-53B" id="FfP-ZZ-UNV"/>
+                        <outlet property="peakButton" destination="fEx-5J-TlV" id="Sem-Dh-MU2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oci-dZ-U9k" userLabel="First Responder" sceneMemberID="firstResponder"/>

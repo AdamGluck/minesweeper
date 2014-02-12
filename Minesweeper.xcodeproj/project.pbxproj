@@ -23,6 +23,8 @@
 		0F68DE0018A5368800348C7E /* TTBoardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F68DDFF18A5368800348C7E /* TTBoardModel.m */; };
 		0F68DE0318A53DC000348C7E /* TTBoardPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F68DE0218A53DC000348C7E /* TTBoardPosition.m */; };
 		0FCE2BC818A7ED4900F9E780 /* TTBoardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FCE2BC718A7ED4900F9E780 /* TTBoardViewController.m */; };
+		0FCE2BCA18AB9FA800F9E780 /* Bomb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0FCE2BC918AB9FA800F9E780 /* Bomb@2x.png */; };
+		0FCE2BCC18AB9FAD00F9E780 /* Bomb.png in Resources */ = {isa = PBXBuildFile; fileRef = 0FCE2BCB18AB9FAD00F9E780 /* Bomb.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +61,8 @@
 		0F68DE0218A53DC000348C7E /* TTBoardPosition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTBoardPosition.m; sourceTree = "<group>"; };
 		0FCE2BC618A7ED4900F9E780 /* TTBoardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTBoardViewController.h; sourceTree = "<group>"; };
 		0FCE2BC718A7ED4900F9E780 /* TTBoardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTBoardViewController.m; sourceTree = "<group>"; };
+		0FCE2BC918AB9FA800F9E780 /* Bomb@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bomb@2x.png"; sourceTree = "<group>"; };
+		0FCE2BCB18AB9FAD00F9E780 /* Bomb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bomb.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,6 +140,8 @@
 		0F68DDD018A5365800348C7E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				0FCE2BCB18AB9FAD00F9E780 /* Bomb.png */,
+				0FCE2BC918AB9FA800F9E780 /* Bomb@2x.png */,
 				0F68DDD118A5365800348C7E /* Minesweeper-Info.plist */,
 				0F68DDD218A5365800348C7E /* InfoPlist.strings */,
 				0F68DDD518A5365800348C7E /* main.m */,
@@ -239,7 +245,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0FCE2BCA18AB9FA800F9E780 /* Bomb@2x.png in Resources */,
 				0F68DDE218A5365900348C7E /* Images.xcassets in Resources */,
+				0FCE2BCC18AB9FAD00F9E780 /* Bomb.png in Resources */,
 				0F68DDD418A5365800348C7E /* InfoPlist.strings in Resources */,
 				0F68DDDD18A5365800348C7E /* Main.storyboard in Resources */,
 			);

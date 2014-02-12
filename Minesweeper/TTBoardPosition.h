@@ -11,7 +11,7 @@
 typedef enum {
     PositionStateNoBomb,
     PositionStateBomb,
-    PositionStateSelected,
+    PositionStateChecked,
 } PositionState;
 
 @interface TTBoardPosition : NSObject
