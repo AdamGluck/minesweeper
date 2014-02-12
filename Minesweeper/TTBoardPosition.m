@@ -9,8 +9,7 @@
 #import "TTBoardPosition.h"
 
 @implementation TTBoardPosition
--(id)initWithPositionState:(PositionState)positionState
-{
+-(id)initWithPositionState:(PositionState)positionState {
     self = [super init];
     if (self){
         self.positionState = positionState;

@@ -17,80 +17,138 @@
 
 @implementation TTBoardModel
 
-#pragma mark - Public Methods
--(void)resetBoard {
-    // allocate a board
-    self.board = [[NSMutableArray alloc] initWithCapacity:8];
-    for (NSInteger i = 0; i < 8; i++){
-        self.board[i] = [[NSMutableArray alloc] initWithCapacity:8];
-        for (NSInteger j = 0; j < 8; j++){
-            TTBoardPosition * boardPosition = [[TTBoardPosition alloc] initWithPositionState:PositionStateNoBomb];
-            self.board[i][j] = boardPosition;
-        }
+#define DEFAULT_BOARD_SIZE 8
+#define DEFAULT_BOMB_COUNT 10
+
+-(id)init {
+    self = [super init];
+    if (self){
+        self.boardSize = DEFAULT_BOARD_SIZE;
+        self.bombCount = DEFAULT_BOMB_COUNT;
+        [self resetBoard];
     }
-    [self populateWithBombs];
+    return self;
 }
 
--(BOOL)checkBombAtRow:(NSInteger)row andColumn:(NSInteger)column {
-    TTBoardPosition * boardPosition = self.board[row][column];
+-(id)initWithBoardSize:(NSInteger)boardSize andBombCount:(NSInteger)bombCount {
+    self = [super init];
+    if (self){
+        NSInteger numberOfTiles = boardSize * boardSize;
+        if (bombCount > numberOfTiles) bombCount = numberOfTiles;
+        self.boardSize = boardSize;
+        self.bombCount = bombCount;
+        [self resetBoard];
+    }
+    return self;
+}
+
+#pragma mark - Public Methods
+
+-(void)resetBoard {
+    // allocate a board
+    self.board = [[NSMutableArray alloc] initWithCapacity:self.boardSize];
+    [self populateBoardArray];
+    [self populateWithRandomBombs];
+}
+
+-(BOOL)checkBombAtIndexPath:(NSIndexPath *)indexPath {
+    TTBoardPosition * boardPosition = [self boardPositionAtIndexPath:indexPath];
     return boardPosition.positionState == PositionStateBomb;
 }
 
 -(BOOL)validateBoard {
-    // test to see if there is a position state with no bomb
+    // test to see if there is a position state with no bomb and not selected
     // if there is it means that they still have to select more states
     for (NSMutableArray * row in self.board){
         for (TTBoardPosition * column in row){
-            return column.positionState == PositionStateNoBomb;
+            if (column.positionState == PositionStateNoBomb){
+                return NO;
+            }
         }
     }
-    return NO;
+    return YES;
 }
 
 -(NSMutableArray *)bombIndexPaths {
-    NSMutableArray * bombPositions = [[NSMutableArray alloc] init];
-    for (NSInteger i = 0; i < 8; i++){
-        for (NSInteger j = 0; j < 8; j++){
+    NSMutableArray * bombPositions = [NSMutableArray array];
+    for (NSInteger i = 0; i < self.boardSize; i++){
+        for (NSInteger j = 0; j < self.boardSize; j++){
             TTBoardPosition * boardPosition = self.board[i][j];
             if (boardPosition.positionState == PositionStateBomb){
-                [bombPositions addObject:boardPosition];
+                NSIndexPath * bombIndexPath = [self indexPathFromArrayRow:i andColumn:j];
+                [bombPositions addObject:bombIndexPath];
             }
         }
     }
     return bombPositions;
 }
 
--(NSInteger)numberOfBombsAroundPositionWithRow:(NSInteger)row andColumn:(NSInteger)column
-{
-    NSInteger nBombs = 0;
+-(NSInteger)checkNumberOfBombsAroundPositionWithIndexPath:(NSIndexPath *)indexPath {
+    // see the method boardPositionAtIndexPath for more on this sort of conversion
+    NSInteger bombCount = 0;
+    NSMutableArray * bombIndexPaths = [self indexPathsAroundPositionAtIndexPath:indexPath];
+    for (NSIndexPath * indexPath in bombIndexPaths){
+        TTBoardPosition * boardPosition = [self boardPositionAtIndexPath:indexPath];
+        if (boardPosition.positionState == PositionStateBomb) bombCount++;
+    }
+    return bombCount;
+}
+
+-(NSMutableArray *)indexPathsAroundPositionAtIndexPath:(NSIndexPath *)indexPath {
+    NSInteger arrayRow = indexPath.section;
+    NSInteger arrayColumn = indexPath.row;
+    NSMutableArray * indexPaths = [NSMutableArray array];
     for (NSInteger i = -1; i < 2; i++){
-        if (row + i >= 0 && row + i <= 7){
-            for (NSInteger k = -1; k < 2; k++){
-                if (column + k >= 0 && column + k <= 7){
-                    TTBoardPosition * boardPosition = self.board[row + i][column + k];
-                    if (boardPosition.positionState == PositionStateBomb) nBombs++;
+        if (arrayRow + i >= 0 && arrayRow + i < self.boardSize){
+            for (NSInteger j = -1; j < 2; j++){
+                if (arrayColumn + j >= 0 && arrayColumn + j < self.boardSize){
+                    NSIndexPath * indexPath = [self indexPathFromArrayRow: (arrayRow + i) andColumn:(arrayColumn + j)];
+                    [indexPaths addObject:indexPath];
                 }
             }
         }
     }
-    return nBombs;
+    return indexPaths;
 }
 
 #pragma mark - Public Method Helpers
 
--(void)populateWithBombs
-{
+-(void)populateBoardArray {
+    for (NSInteger i = 0; i < self.boardSize; i++){
+        self.board[i] = [[NSMutableArray alloc] initWithCapacity:self.boardSize];
+        for (NSInteger j = 0; j < self.boardSize; j++){
+            TTBoardPosition * boardPosition = [[TTBoardPosition alloc] initWithPositionState:PositionStateNoBomb];
+            self.board[i][j] = boardPosition;
+        }
+    }
+}
+
+-(void)populateWithRandomBombs {
     NSInteger numberOfBombsPlaced = 0;
-    while (numberOfBombsPlaced < 10) {
-        // randomly select board position row and column numbers
-        NSInteger row = (NSInteger) arc4random_uniform(8);
-        NSInteger column = (NSInteger) arc4random_uniform(8);
+    while (numberOfBombsPlaced < self.bombCount) {
+        NSInteger row = (NSInteger) arc4random_uniform(self.boardSize);
+        NSInteger column = (NSInteger) arc4random_uniform(self.boardSize);
         TTBoardPosition * randomBoardPosition = self.board[row][column];
         if (randomBoardPosition.positionState != PositionStateBomb){
             randomBoardPosition.positionState = PositionStateBomb;
             numberOfBombsPlaced++;
         }
     }
+}
+
+/*
+Helper methods to parse indexPath into the underlying data model.
+*/
+
+-(TTBoardPosition *)boardPositionAtIndexPath:(NSIndexPath *)indexPath {
+    NSInteger arrayRow = indexPath.section;
+    NSInteger arrayColumn = indexPath.row;
+    TTBoardPosition * boardPosition = self.board[arrayRow][arrayColumn];
+    return boardPosition;
+}
+
+-(NSIndexPath *)indexPathFromArrayRow:(NSInteger)row andColumn:(NSInteger)column {
+    return [NSIndexPath indexPathForItem:column inSection:row];
 }
 
 @end
